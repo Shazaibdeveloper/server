@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser'); // Require the body-parser module
 router.use(bodyParser.json()); // Use the JSON parser
+const bycript = require('bcryptjs') 
 
 require("../db/Conn")
  const User = require("../models/UserSchema")
@@ -35,13 +36,21 @@ router.post('/signin',async function (req, res) {
         const {email,password} = req.body;
 
         if(!email || !password){
-            return res.status(400).json({ message: "registered successfully" });
+            return res.status(400).json({ message: "register error" });
         }
 
         const userExists = await User.findOne({ email: email });
-        console.error(userExists);
-        res.json({message: "You have Registered successful"})
 
+        if(userExists){
+         const isMatch = await bycript.compare(password, userExists.password)
+         if(isMatch){
+            return res.status(400).json({ message: "Invalid" });
+         }else{
+            res.json({message: "You have Registered successful"})
+         }
+        }
+        console.error(userExists);
+ 
     }catch(err){console.log("error" , err)}
 })
 
