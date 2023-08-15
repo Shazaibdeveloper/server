@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser'); // Require the body-parser module
 router.use(bodyParser.json()); // Use the JSON parser
 const bycript = require('bcryptjs') 
@@ -14,7 +15,12 @@ router.get('/', function (req, res) {
 router.get('/register', function (req, res) {
     res.send("Hello register !");
 });
- 
+
+router.get('/contact', function (req, res) {
+     res.send("Hello contact!");
+});
+
+  
 router.post('/register', async function (req, res) {
     try {
         const { name, work, email, password, cpassword, phone } = req.body;
@@ -43,6 +49,14 @@ router.post('/signin',async function (req, res) {
 
         if(userExists){
          const isMatch = await bycript.compare(password, userExists.password)
+         const token = await userExists.generateAuthToken();
+
+
+         res.cookie('jwtoken',token,{
+            expires: new Date(Date.now() + 25892000000),
+            httpOnly: true
+         })
+
          if(isMatch){
             return res.status(400).json({ message: "Invalid" });
          }else{
