@@ -22,11 +22,13 @@ router.get('/contact', function (req, res) {
 
   
 router.post('/register', async function (req, res) {
-    try {
-        const { name, work, email, password, cpassword, phone } = req.body;
+    const { name, work, email, password, cpassword, number } = req.body;
+    if(!name|| !work|| !email|| !password|| !cpassword|| !number){
+        return res.status(422).json({ message: "Enter correct Data !" });
+    }
 
-        
-        const user = new User({ name, email, work, phone, password, cpassword });
+    try {
+        const user = new User({ name, email, work, number, password, cpassword });
         await user.save();
         return res.status(201).json({ message: "user registered successfully" });
     } catch (err) {
