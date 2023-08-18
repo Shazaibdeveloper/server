@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser'); // Require the body-parser module
 router.use(bodyParser.json()); // Use the JSON parser
 const bycript = require('bcryptjs') 
-
+const authentication = require('../middleware/Authentication')
 require("../db/Conn")
  const User = require("../models/UserSchema")
 
@@ -15,6 +15,11 @@ router.get('/', function (req, res) {
 router.get('/register', function (req, res) {
     res.send("Hello register !");
 });
+
+router.get('/about', authentication,function (req, res) {
+    res.send(req.rootUser);
+});
+
 
 router.get('/contact', function (req, res) {
      res.send("Hello contact!");
