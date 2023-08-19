@@ -5,6 +5,7 @@ const bodyParser = require('body-parser'); // Require the body-parser module
 router.use(bodyParser.json()); // Use the JSON parser
 const bycript = require('bcryptjs') 
 const authentication = require('../middleware/Authentication')
+ 
 require("../db/Conn")
  const User = require("../models/UserSchema")
 
@@ -46,6 +47,7 @@ router.post('/register', async function (req, res) {
 router.post('/signin',async function (req, res) {
     
     try{
+        let token;
         const {email,password} = req.body;
 
         if(!email || !password){
@@ -53,25 +55,23 @@ router.post('/signin',async function (req, res) {
         }
 
         const userExists = await User.findOne({ email: email });
-
-        if(userExists){
+         if(userExists){
          const isMatch = await bycript.compare(password, userExists.password)
-         const token = await userExists.generateAuthToken();
+         token = await userExists.generateAuthToken();
 
 
          res.cookie('jwtoken',token,{
-            expires: new Date(Date.now() + 25892000000),
+            expires: new Date(Date.now() + 65892000000),
             httpOnly: true
          })
 
-         if(isMatch){
+         if(!isMatch){
             return res.status(400).json({ message: "Invalid" });
          }else{
             res.json({message: "You have Registered successful"})
          }
         }
-        console.error(userExists);
- 
+  
     }catch(err){console.log("error" , err)}
 })
 
