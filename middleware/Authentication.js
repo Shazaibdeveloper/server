@@ -1,8 +1,9 @@
  const jwt = require('jsonwebtoken');
 const user = require('../models/UserSchema')
 const dotenv = require('dotenv');
+ 
 dotenv.config({path:'./config.env'})
-
+ 
 const Authentication = async (req, res, next) => {
     try {
       const token = req.cookies.jwtoken; 
@@ -10,7 +11,9 @@ const Authentication = async (req, res, next) => {
        const validToken = jwt.verify(token, "MONGODATABASEEXPRESSJAVASCRIPTREACT");
  
       const rootUser = await user.findOne({ _id: validToken._id, "tokens.token": token  });
-       if (!rootUser) {throw new Error('Not Found')}
+        if (!rootUser) {
+        throw new Error('Not Found')
+       }
   
       req.token = token;
       req.rootUser = rootUser;
