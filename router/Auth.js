@@ -23,8 +23,8 @@ router.get('/about', auth,(req, res)  => {
  });
 
 
-router.get('/contact', function (req, res) {
-     res.send("Hello contact!");
+router.get('/getdata',auth ,function (req, res) {
+    res.send(req.rootUser);
 });
 
   
