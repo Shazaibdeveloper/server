@@ -22,6 +22,11 @@ router.get("/about", auth, (req, res) => {
   res.send(req.rootUser);
 });
 
+router.get("/logout", auth, (req, res) => {
+  res.clearCookie("jwtoken", { path: "/home" });
+  res.status(200).send("user logout successfully");
+});
+
 router.post("/contact", auth, async function (req, res) {
   try {
     const { name, email, work, message } = req.body;
