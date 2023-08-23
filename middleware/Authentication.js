@@ -5,7 +5,7 @@ const Authentication = async (req, res, next) => {
   try {
     const token = req.cookies.jwtoken;
 
-    const validToken = jwt.verify(token, "MONGODATABASEEXPRESSJAVASCRIPTREACT");
+    const validToken = jwt.verify(token, process.env.SECRETE_KEY);
 
     const rootUser = await user.findOne({
       _id: validToken._id,
