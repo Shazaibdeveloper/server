@@ -22,7 +22,7 @@ router.get("/about", auth, (req, res) => {
   res.send(req.rootUser);
 });
 
-router.get("/logout", auth, (req, res) => {
+router.get("/logout", auth, async (req, res) => {
   res.clearCookie("jwtoken", { path: "/home" });
   res.status(200).send("user logout successfully");
 });
