@@ -23,7 +23,7 @@ router.get("/about", auth, (req, res) => {
 });
 
 router.get("/logout", auth, async (req, res) => {
-  res.clearCookie("jwtoken", { path: "/home" });
+  res.clearCookie("jwtoken", { path: "/" });
   res.status(200).send("user logout successfully");
 });
 
