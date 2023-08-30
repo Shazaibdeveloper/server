@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser"); // Require the body-parser module
 router.use(bodyParser.json()); // Use the JSON parser
 const bycript = require("bcryptjs");
 const auth = require("../middleware/Authentication");
+const cookieParser = require("cookie-parser");
 router.use(cookieParser());
 require("../db/Conn");
 const User = require("../models/UserSchema");
